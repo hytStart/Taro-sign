@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
 
-import './index.less'
+import './index.sass'
 
 
 @connect(({ counter }) => ({
@@ -43,7 +43,7 @@ class Index extends Component {
         <Button className='dec_btn' onClick={this.props.dec}>-</Button>
         <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
         <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+        <View><Text className='test'>Hello, World</Text></View>
       </View>
     )
   }
