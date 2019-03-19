@@ -10,7 +10,7 @@ import { AtSearchBar } from 'taro-ui'
     constructor () {
         super(...arguments)
         this.state = {
-          value: ''
+            value: ''
         }
     }
     onChange = (value) => {
