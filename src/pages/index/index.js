@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-
+import globalData from '../../util/global.js'
 import { add, minus, asyncAdd } from '../../actions/counter'
 
 import './index.sass'
@@ -28,6 +28,8 @@ class Index extends Component {
 
   componentWillReceiveProps (nextProps) {
     console.log(this.props, nextProps)
+  }
+  componentDidMount() {
   }
 
   componentWillUnmount () { }

@@ -4,7 +4,7 @@ import { Provider } from '@tarojs/redux'
 import 'taro-ui/dist/style/index.scss' // 全局引入一次即可
 
 import Index from './pages/index'
-
+import globalData from './util/global.js'
 import configStore from './store'
 
 import './app.sass'
@@ -56,9 +56,32 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+      const { userInfo } = globalData
+      if (Object.keys(userInfo).length === 0) {
+        Taro.getSetting({
+          success: res => {
+            if (res.authSetting['scope.userInfo']) {
+              // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+              Taro.getUserInfo({
+                success: resS => {
+                  // 可以将 res 发送给后台解码出 unionId
+                  globalData.userInfo = resS.userInfo
+                  Taro.switchTab({url: '/pages/index/index'})
+                }
+              })
+            } else {
+              Taro.switchTab({url: '/pages/home/index'})
+            }
+          }
+         }).then()
+      } else {
+        Taro.switchTab({url: '/pages/index/index'})
+      }
+  }
 
-  componentDidShow () {}
+  componentDidShow () {
+  }
 
   componentDidHide () {}
 

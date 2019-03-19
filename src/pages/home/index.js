@@ -1,6 +1,7 @@
 import Taro , { Component } from '@tarojs/taro';
 import { View, Text , Button} from '@tarojs/components';
 import { AtButton } from 'taro-ui'
+import globalData from '../../util/global.js'
 
 export default class Home extends Component {
 
@@ -11,7 +12,8 @@ export default class Home extends Component {
     state={}
 
     componentWillMount () {}
-    componentDidMount () {} 
+    componentDidMount () {
+    } 
     componentWillReceiveProps (nextProps,nextContext) {} 
     componentWillUnmount () {} 
     componentDidShow () {} 
@@ -22,7 +24,8 @@ export default class Home extends Component {
         const {
             userInfo,
         } = e.detail
-        console.log(userInfo)
+        globalData.userInfo = userInfo
+        Taro.switchTab({url: '/pages/index/index'})
     }
     render() {
         return (
