@@ -21,9 +21,13 @@ class App extends Component {
 
     config = {
         pages: [
-            'pages/home/index',
+            'pages/teacherSignInformation/index',
             'pages/index/index',
             'pages/userAuthorized/index',
+            'pages/qrcode/qrcode',
+            'pages/home/index',
+            'pages/information/index',
+            'pages/myInfo/index',
         ],
         window: {
             backgroundTextStyle: 'light',
@@ -45,40 +49,43 @@ class App extends Component {
                 pagePath: "pages/index/index",
                 iconPath: "./assets/tab-bar/cate.png",
                 selectedIconPath: "./assets/tab-bar/cate-active.png",
-                text: "找片"
-            }
-            // , {
-            //   pagePath: "pages/cart/cart",
-            //   iconPath: "./assets/tab-bar/cart.png",
-            //   selectedIconPath: "./assets/tab-bar/cart-active.png",
-            //   text: "我的"
-            // }
-            ]
+                text: "时政"
+            }, {
+                pagePath: "pages/information/index",
+                iconPath: "./assets/tab-bar/cart.png",
+                selectedIconPath: "./assets/tab-bar/cart-active.png",
+                text: "资料"
+            }, {
+                pagePath: "pages/myInfo/index",
+                iconPath: "./assets/tab-bar/cart.png",
+                selectedIconPath: "./assets/tab-bar/cart-active.png",
+                text: "我的"
+            }]
         }
     }
 
     componentDidMount () {
-        const { userInfo } = globalData
-        if (Object.keys(userInfo).length === 0) {
-            Taro.getSetting({
-                success: res => {
-                    if (res.authSetting['scope.userInfo']) {
-                        // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-                        Taro.getUserInfo({
-                            success: resS => {
-                                // 可以将 res 发送给后台解码出 unionId
-                                globalData.userInfo = resS.userInfo
-                                Taro.switchTab({url: '/pages/index/index'})
-                            }
-                        })
-                    } else {
-                        Taro.navigateTo({url: '/pages/userAuthorized/index'})
-                    }
-                }
-            }).then()
-        } else {
-            Taro.switchTab({url: '/pages/index/index'})
-        }
+        // const { userInfo } = globalData
+        // if (Object.keys(userInfo).length === 0) {
+        //     Taro.getSetting({
+        //         success: res => {
+        //             if (res.authSetting['scope.userInfo']) {
+        //                 // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+        //                 Taro.getUserInfo({
+        //                     success: resS => {
+        //                         // 可以将 res 发送给后台解码出 unionId
+        //                         globalData.userInfo = resS.userInfo
+        //                         Taro.switchTab({url: '/pages/home/index'})
+        //                     }
+        //                 })
+        //             } else {
+        //                 Taro.navigateTo({url: '/pages/userAuthorized/index'})
+        //             }
+        //         }
+        //     }).then()
+        // } else {
+        //     Taro.switchTab({url: '/pages/home/index'})
+        // }
     }
 
     componentDidShow () {

@@ -19,7 +19,7 @@ import { AtSearchBar } from 'taro-ui'
         })
     }
     onActionClick = () => {
-        console.log(1111)
+        // console.log(1111)
     }
 
     state={}

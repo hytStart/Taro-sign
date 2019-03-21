@@ -4,28 +4,26 @@ import { AtButton } from 'taro-ui'
 import globalData from '../../util/global.js'
 
 export default class AuthorizedButton extends Component {
-    state={}
-    componentWillMount () {}
+    static defaultProps = {
+        onCloseAuthorizeFn: () =>{},
+        value: 0,
+    }
+    constructor() {
+        super(...arguments)
+        this.state={}
+    }
     componentDidMount () {
     } 
-    componentWillReceiveProps (nextProps,nextContext) {} 
-    componentWillUnmount () {} 
-    componentDidShow () {} 
-    componentDidHide () {} 
-    componentDidCatchError () {} 
-    componentDidNotFound () {} 
     onGetUserInfo = e => {
-        console.log(this.props)
-        const { closeAuthorizeButton } = this.props
+        const { onCloseAuthorizeFn } = this.props
         const {
             userInfo,
         } = e.detail
         globalData.userInfo = userInfo
-        closeAuthorizeButton()
+        onCloseAuthorizeFn()
         // Taro.switchTab({url: '/pages/index/index'})
     }
     render() {
-        console.log(this.props)
         return (
             <View>
                 <AtButton

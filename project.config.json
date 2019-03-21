@@ -4,11 +4,12 @@
 	"description": "思政教育签到",
 	"appid": "wxaf2fd57c466d1d9f",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
 		"minified": false,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false
 	},
 	"compileType": "miniprogram",
 	"condition": {}
