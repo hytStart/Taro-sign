@@ -4,6 +4,14 @@ const defaultMethod = 'POST'
 const successStatus = 200
 const successFlag = 1
 
+const messageToast = title => {
+    Taro.showToast({
+        title,
+        icon: 'none',
+        duration: 1000
+    })
+}
+
 export default function fetch(options) {
     const { 
         url,
@@ -19,11 +27,7 @@ export default function fetch(options) {
         const { statusCode, data } = response
         if (statusCode != successStatus) {
             if (showErrorToast) {
-                Taro.showToast({
-                    title: data || '请求接口失败',
-                    icon: 'none',
-                    duration: 1000
-                })
+                messageToast(data || '请求接口失败')
             }
             const errMessage = data || '请求接口失败'
             return Promise.reject(errMessage)
@@ -33,11 +37,7 @@ export default function fetch(options) {
                 return datas
             } else {
                 if (showErrorToast) {
-                    Taro.showToast({
-                        title: message || '流程错误',
-                        icon: 'none',
-                        duration: 1000
-                    })
+                    messageToast(message || '流程错误')
                 }
                 const errMessage = message || '流程错误'
                 return Promise.reject(errMessage)
@@ -46,11 +46,7 @@ export default function fetch(options) {
     }).catch(errors => {
         const { errMsg } = errors
         if (showErrorToast) {
-            Taro.showToast({
-                title: errMsg || '发起请求异常',
-                icon: 'none',
-                duration: 1000
-            })
+            messageToast(errMsg || '发起请求异常')
         }
         const errMessage = errMsg || '发起请求异常'
         return Promise.reject(errMessage)
