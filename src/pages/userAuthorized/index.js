@@ -1,21 +1,37 @@
 import Taro , { Component } from '@tarojs/taro';
-import { View, Text , Image} from '@tarojs/components';
+import { View, Image} from '@tarojs/components';
 import { connect } from '@tarojs/redux'
 import { AtInput, AtButton } from 'taro-ui'
 
-import { testActions } from '@actions/userAuthorized.js'
-import { GET_STUDNET_USERINFO } from '@constants/urls'
+import {
+    testActions, dispatchGetUserInfoActions,
+} from '@actions/userAuthorized.js'
 import schoolImg from '@assets/swiper1.jpg'
 import './userAu.sass'
 
 import globalData from '../../util/global.js'
 import AuthorizedButton from '../../component/AuthorizedButton/index.js'
 
-@connect(state => state, (dispatch) => ({
-    testCom() {
-        dispatch(testActions())
-    },
-}))
+const showTost = title => {
+    Taro.showToast({
+        title: title || '出问题了',
+        icon: 'none',
+        duration: 1000
+    }).then(res => console.log(res))
+}
+
+// @connect(state => state, (dispatch) => ({
+//     testCom() {
+//         dispatch(testActions())
+//     },
+//     // dispatchGetUserInfoFn(payload) {
+//     //     dispatch(getUserInfoActions(payload))
+//     // },
+//     dispatchGetUserInfoActions,
+// }))
+@connect(state => state.userAuthorized, {
+    dispatchGetUserInfoActions
+})
 
 class UserAtuthorized extends Component {
     config = {
@@ -25,7 +41,7 @@ class UserAtuthorized extends Component {
         super(...arguments)
         this.state = {
             authorizeButton: false, // 授权登录button state
-            boundModuleState: true, // 是否需要绑定的view
+            boundModuleState: false, // 是否需要绑定的view
             stuid: '',
             password: '',
         }
@@ -35,6 +51,9 @@ class UserAtuthorized extends Component {
         if (Object.keys(userInfo).length > 0) {
             this.setState({
                 authorizeButton: false,
+            },
+            () => {
+                this.isBoundStudentId()
             })
         } else {
             this.setState({
@@ -51,25 +70,32 @@ class UserAtuthorized extends Component {
         })
     }
     isBoundStudentId = () => {
-        const that = this
         const params = {
-            success(res) {
+            success: (res) => {
                 if (res.code) {
-                    // 发起网络请求
-                    Taro.request({
-                        url: GET_STUDNET_USERINFO,
-                        data: {
-                            code: res.code
+                    const { code } = res
+                    const payload = {
+                        params: {
+                            code,
                         },
-                        method: 'POST'
-                    }).then(response => {
-                        const { data } = response
-                        console.log(data)
-                        console.log(that.props)
-                        that.props.testCom()
-                    })
+                        successCb: data => {
+                            const { username } = data
+                            if (!!username) {
+                                Taro.switchTab({ url: '/pages/home/index' }).then()
+                            } else {
+                                this.setState({
+                                    boundModuleState: true,
+                                })
+                            }
+                        }
+                    }
+                    this.props.dispatchGetUserInfoActions(payload)
                 } else {
-                    console.log('登录失败！' + res.errMsg)
+                    Taro.showToast({
+                        title: '登录失败！' + res.errMsg || '似乎有些小问题',
+                        icon: 'none',
+                        duration: 1000
+                    })
                 }
             }
         }
@@ -87,9 +113,15 @@ class UserAtuthorized extends Component {
     }
     handleBind = () => {
         const { stuid, password } = this.state
+        const { openid } = this.props
+        if (!stuid || !password) {
+            showTost('学号或者密码不可为空')
+            return
+        }
     }
     render() {
         const { authorizeButton, boundModuleState } = this.state
+        console.log(boundModuleState)
         return (
             <View>
                 {

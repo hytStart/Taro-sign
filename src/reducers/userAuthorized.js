@@ -1,17 +1,41 @@
-import { TEST } from '@constants/userAuthorized.js'
+import {
+    TEST,
+    GET_USER_INFO_SUCCEEDED,
+    GET_USER_INFO_FAILED,
+} from '@constants/userAuthorized.js'
 
 const INITIAL_STATE = {
-    stuId: 1,
+    username:0,
+    isteacher: 0,
+    name: "",
+    openid: "",
 }
 
 export default function userAuthorized(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case TEST:
-            return {
-                ...state,
-                stuId: 2222,
+    case TEST:
+        return {
+            ...state,
+            stuId: 2222,
+        }
+    case GET_USER_INFO_SUCCEEDED:
+        const {
+            payload: {
+                params,
             }
-        default:
-            return state
+        } = action
+        return {
+            ...state,
+            ...params,
+        }
+    case GET_USER_INFO_FAILED:
+        const {
+            err,
+        } = action
+        return {
+            ...state,
+        }
+    default:
+        return state
     }
 }

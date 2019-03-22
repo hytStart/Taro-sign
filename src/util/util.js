@@ -1,9 +1,6 @@
-class Util {
-    constructor() {
-        super()
-    }
+const Util =  {
     getEventData(data, tag) {
         return data.currentTarget.dataset[tag];
     }
 }
-export  default Util
+export default Util
