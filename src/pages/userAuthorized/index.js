@@ -4,7 +4,9 @@ import { connect } from '@tarojs/redux'
 import { AtInput, AtButton } from 'taro-ui'
 
 import {
-    testActions, dispatchGetUserInfoActions,
+    testActions,
+    dispatchGetUserInfoActions,
+    dispatchBoundUser,
 } from '@actions/userAuthorized.js'
 import schoolImg from '@assets/swiper1.jpg'
 import './userAu.sass'
@@ -30,7 +32,8 @@ const showTost = title => {
 //     dispatchGetUserInfoActions,
 // }))
 @connect(state => state.userAuthorized, {
-    dispatchGetUserInfoActions
+    dispatchGetUserInfoActions,
+    dispatchBoundUser,
 })
 
 class UserAtuthorized extends Component {
@@ -118,10 +121,26 @@ class UserAtuthorized extends Component {
             showTost('学号或者密码不可为空')
             return
         }
+        const payload = {
+            params: {
+                username: stuid,
+                password,
+                isteacher: 0, // 不知道是不是老师，暂定传0
+                openid,
+            },
+            successCb: () => {
+                showTost('绑定成功')
+                Taro.switchTab({url: '/pages/home/index'})
+            },
+            failCb: () => {
+                showTost('用户已经绑定')
+                Taro.switchTab({url: '/pages/home/index'})
+            },
+        }
+        this.props.dispatchBoundUser(payload)
     }
     render() {
         const { authorizeButton, boundModuleState } = this.state
-        console.log(boundModuleState)
         return (
             <View>
                 {

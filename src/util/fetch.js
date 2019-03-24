@@ -22,7 +22,7 @@ export default function fetch(options) {
     return Taro.request({
         url,
         method,
-        data: params,
+        data: JSON.stringify(params),
     }).then(response => {
         const { statusCode, data } = response
         if (statusCode != successStatus) {
