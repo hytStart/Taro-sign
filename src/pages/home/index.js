@@ -1,13 +1,17 @@
 import Taro , { Component } from '@tarojs/taro';
-import { View, Text , Button, Image} from '@tarojs/components';
+import { View, Text, Image} from '@tarojs/components';
 import { connect } from '@tarojs/redux'
 import SaoMiao from '@assets/saomiao.png'
 import ShengCheng from '@assets/shengcheng.png'
 import util from '@util/util.js'
+import {
+    dispatchSignRecord,
+} from '@actions/home.js'
 import './home.sass'
 
 
 @connect(state => state, {
+    dispatchSignRecord,
 })
 export default class Home extends Component {
 
@@ -16,7 +20,6 @@ export default class Home extends Component {
     }
     state={}
     componentDidMount () {
-        console.log(this.props)
     }
     creatCode = () => {
         const { userAuthorized: { isteacher } } = this.props
@@ -30,14 +33,26 @@ export default class Home extends Component {
         Taro.navigateTo(goParams).then()
     }
     scanCode = () => {
+        const { userAuthorized: { isteacher } } = this.props
+        if (isteacher == 1) {
+            util.showToast('只有学生有该权限哦')
+            return
+        }
         const qrParams = {
-            success(res) {
+            success: (res) => {
                 const { result } = res
-                const signParams = {
-                    sid: result,
-                    uid: 1111,
-                    time: new Date(),
+                const { userAuthorized: { username, name } } = this.props
+                const payload = {
+                    params: {
+                        sid: result,
+                        username,
+                        name,
+                    },
+                    successCb: () => {
+                        util.showToast('签到成功', 'success', 2000)
+                    }
                 }
+                this.props.dispatchSignRecord(payload)
             }
         }
         Taro.scanCode(qrParams).then()

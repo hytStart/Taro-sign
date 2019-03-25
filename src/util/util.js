@@ -4,11 +4,11 @@ const Util =  {
     getEventData(data, tag) {
         return data.currentTarget.dataset[tag];
     },
-    showToast(title) {
+    showToast(title, icons, time) {
         Taro.showToast({
             title: title || '出问题了',
-            icon: 'none',
-            duration: 1000
+            icon: icons || 'none',
+            duration: time || 1000
         }).then(res => console.log(res))
     },
     formatNumber(n) {

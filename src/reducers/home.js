@@ -1,16 +1,14 @@
 import {
-    CREAT_QRCODE_SUCCESSED,
-    CREAT_QRCODE_FAILED,
-} from '@constants/qrcode.js'
+    SIGN_RECORD_SUCCEEDED,
+    SIGN_RECORD_FAILED,
+} from '@constants/home.js'
 
 const INITIAL_STATE = {
-    sid: 1,
-    qrcode: '',
 }
 
-export default function qrCode(state = INITIAL_STATE, action) {
+export default function home(state = INITIAL_STATE, action) {
     switch (action.type) {
-    case CREAT_QRCODE_SUCCESSED:
+    case SIGN_RECORD_SUCCEEDED:
         const {
             payload: {
                 params,
@@ -18,9 +16,9 @@ export default function qrCode(state = INITIAL_STATE, action) {
         } = action
         return {
             ...state,
-            ...params,
+            // ...params,
         }
-    case CREAT_QRCODE_FAILED:
+    case SIGN_RECORD_FAILED:
         const {
             err,
         } = action

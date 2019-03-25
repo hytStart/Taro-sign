@@ -21,6 +21,8 @@ export default class Qrcode extends Component {
         location: '',
         dateSel: util.formatDate(new Date()),
         timeSel: util.formatTime(new Date()),
+        qrSrc: '',
+        qrState: false,
     }
     componentDidMount () {
     }
@@ -45,7 +47,12 @@ export default class Qrcode extends Component {
         })
     }
     onCreactQr = () => {
-        const { 
+        const {
+            userAuthorized: {
+                username,
+            },
+        } = this.props
+        const {
             title,
             location,
             dateSel,
@@ -53,18 +60,33 @@ export default class Qrcode extends Component {
         } = this.state
         const payload = {
             params: {
+                username,
                 title,
                 location,
-                dateSel,
-                timeSel,
+                endtime: `${dateSel} ${timeSel}`,
             },
-            successCb: () => {},
+            successCb: (res) => {
+                const { qrcode } = res
+                this.setState({
+                    qrSrc: qrcode,
+                    qrState: true,
+                })
+            },
             failCb: () => {},
         }
         this.props.dispatchCreactQr(payload)
     }
+    onReturn = () => {
+        const { qrState } = this.state
+        this.setState({
+            qrState: !qrState,
+        })
+    }
+    onGohome = () => {
+        Taro.switchTab({url: '/pages/home/index'})
+    }
     render() {
-        const { title, location, dateSel, timeSel } = this.state
+        const { title, location, dateSel, timeSel, qrSrc, qrState } = this.state
         return (
             <View className='container'>
                 <View>
@@ -102,11 +124,20 @@ export default class Qrcode extends Component {
                         </View>
                     </View>
                     <AtButton onClick={this.onCreactQr} className='picker_btn' type='primary'>生成签到码</AtButton>
+                    {
+                        qrSrc ?
+                            <AtButton onClick={this.onReturn} className='picker_btn' type='primary'>查看签到码</AtButton> : null
+                    }
                 </View>
-                <View className='qr_container'>
-                    <Image src='https://www.niushaoda.club/qrcode/30.jpg'></Image>
-                    <Text>签到主题</Text>
-                </View>
+                {
+                    qrState ?
+                        <View className='qr_container'>
+                            <Image className='qr_img' src={qrSrc}></Image>
+                            <Text>{title}</Text>
+                            <AtButton onClick={this.onReturn} className='picker_btn' type='primary'>返回重新生成签到码</AtButton>
+                            <AtButton onClick={this.onGohome} className='picker_btn' type='primary'>返回首页</AtButton>
+                        </View> : null
+                }
             </View>
         );
     }

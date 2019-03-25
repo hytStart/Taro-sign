@@ -25,21 +25,24 @@ export default function fetch(options) {
         data: JSON.stringify(params),
     }).then(response => {
         const { statusCode, data } = response
+        // 不是200以外的
         if (statusCode != successStatus) {
-            if (showErrorToast) {
-                messageToast(data || '请求接口失败')
-            }
-            const errMessage = data || '请求接口失败'
+            // 因为走了这个错误，还会继续走catch，所以写成对象，reject出去。showToast在catch里执行。
+            // if (showErrorToast) {
+            //     messageToast(data || '请求接口失败')
+            // }
+            const errMessage = {errMsg: data || '请求接口失败'}
             return Promise.reject(errMessage)
         } else {
+            // flag是不是1的判断
             const { flag, message, data: datas } = data
             if (flag == successFlag) {
                 return datas
             } else {
-                if (showErrorToast) {
-                    messageToast(message || '流程错误')
-                }
-                const errMessage = message || '流程错误'
+                // if (showErrorToast) {
+                //     messageToast(message || '流程错误')
+                // }
+                const errMessage = {errMsg: message || '流程错误'}
                 return Promise.reject(errMessage)
             }
         }

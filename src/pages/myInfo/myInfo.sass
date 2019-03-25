@@ -1,4 +1,44 @@
+@import "@style/index.sass";
+
+@mixin common() {
+    float: left;
+    margin-left: 10rpx;
+}
+
 .teacher_container {
     padding: 20rpx;
+}
+.teacher_container_item {
     background-color: #FAFBFC;
+    height: 120rpx;
+    padding-top: 10rpx;
+    margin-bottom: 10rpx;
+    border-bottom: 1rpx solid $maincolor;
+    overflow: hidden;
+    font-size: 28rpx;
+}
+.teacher_container_detail {
+    background-color: #FAFBFC;
+    height: 90rpx;
+    padding-top: 10rpx;
+    margin-bottom: 10rpx;
+    border-bottom: 1rpx solid $maincolor;
+    overflow: hidden;
+    font-size: 28rpx;
+}
+.item_title {
+    color: $maincolor;
+}
+.item_location {
+    float: right;
+    margin-right: 10rpx;
+}
+.item_starttime {
+    @include common;
+}
+.item_endtime {
+    @include common;
+}
+.clearfix {
+    clear: both;
 }

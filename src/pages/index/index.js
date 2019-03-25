@@ -1,16 +1,17 @@
 import Taro, { Component, hideToast } from '@tarojs/taro'
 import { View, Button, Text, Swiper, SwiperItem, Image, Picker, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import globalData from '../../util/global.js'
-import { add, minus, asyncAdd } from '../../actions/counter'
-
-import './index.sass'
 
 import SwiperImg1 from '@assets/swiper1.jpg'
 import SwiperImg2 from '@assets/swiper2.jpg'
 import SwiperImg3 from '@assets/swiper3.jpg'
 
 import XIALA from '@assets/xiala.png'
+
+import globalData from '../../util/global.js'
+import { add, minus, asyncAdd } from '../../actions/counter'
+
+import './index.sass'
 
 const getEventData = (data, tag) => {
     return data.currentTarget.dataset[tag];

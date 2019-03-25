@@ -21,13 +21,14 @@ class App extends Component {
 
     config = {
         pages: [
-            'pages/qrcode/qrcode',
-            'pages/userAuthorized/index',   
-            'pages/home/index',
-            'pages/teacherSignInformation/index',
             'pages/index/index',
-            'pages/information/index',
             'pages/myInfo/index',
+            'pages/myInfo/recordDetail',
+            'pages/home/index',
+            'pages/qrcode/qrcode',
+            'pages/teacherSignInformation/index',
+            'pages/userAuthorized/index',   
+            'pages/information/index',
         ],
         window: {
             backgroundTextStyle: 'light',

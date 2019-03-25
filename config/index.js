@@ -1,4 +1,10 @@
 const path = require('path')
+const sassImportor = function(url) {
+  const reg = /^@style\/(.*)/
+  return {
+    file: reg.test(url) ? path.resolve(__dirname, '..', 'src/style', url.match(reg)[1]) : url
+  }
+}
 const config = {
   projectName: 'Taro-sign',
   date: '2019-3-18',
@@ -23,6 +29,9 @@ const config = {
         'transform-class-properties',
         'transform-object-rest-spread'
       ]
+    },
+    sass: {
+      importer: sassImportor
     }
   },
   defineConstants: {
@@ -33,7 +42,7 @@ const config = {
     '@components': path.resolve(__dirname, '..', 'src/components'),
     '@constants': path.resolve(__dirname, '..', 'src/constants'),
     '@reducers': path.resolve(__dirname, '..', 'src/reducers'),
-    // '@styles': path.resolve(__dirname, '..', 'src/styles'),
+    '@style': path.resolve(__dirname, '..', 'src/style'),
     '@util': path.resolve(__dirname, '..', 'src/util')
   },
   copy: {
@@ -100,6 +109,9 @@ const config = {
           }
         }
       }
+    },
+    sassLoaderOption: {
+      importer: sassImportor
     }
   }
 }
