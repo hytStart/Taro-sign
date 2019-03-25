@@ -38,7 +38,7 @@ class App extends Component {
         },
         tabBar: {
             color: "#666",
-            selectedColor: "#b4282d",
+            selectedColor: "#618FE7",
             backgroundColor: "#fafafa",
             borderStyle: 'black',
             list: [{
@@ -58,8 +58,8 @@ class App extends Component {
                 text: "资料"
             }, {
                 pagePath: "pages/myInfo/index",
-                iconPath: "./assets/tab-bar/cart.png",
-                selectedIconPath: "./assets/tab-bar/cart-active.png",
+                iconPath: "./assets/tab-bar/user.png",
+                selectedIconPath: "./assets/tab-bar/user-active.png",
                 text: "我的"
             }]
         }

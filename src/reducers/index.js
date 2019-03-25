@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
-import counter from './counter'
+import news from './news'
 import userAuthorized from './userAuthorized.js'
 import qrCode from './qrcode.js'
 import home from './home.js'
 import myInfo from './myInfo.js'
 
 export default combineReducers({
-    counter,
+    news,
     userAuthorized,
     qrCode,
     home,

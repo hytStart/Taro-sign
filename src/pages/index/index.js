@@ -1,15 +1,15 @@
-import Taro, { Component, hideToast } from '@tarojs/taro'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text, Swiper, SwiperItem, Image, Picker, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
+import util from '@util/util'
 import SwiperImg1 from '@assets/swiper1.jpg'
 import SwiperImg2 from '@assets/swiper2.jpg'
 import SwiperImg3 from '@assets/swiper3.jpg'
 
 import XIALA from '@assets/xiala.png'
 
-import globalData from '../../util/global.js'
-import { add, minus, asyncAdd } from '../../actions/counter'
+import { add, minus, asyncAdd } from '@actions/news.js'
 
 import './index.sass'
 
@@ -30,7 +30,7 @@ const swiperData = [
         name: '3',
     },
 ]
-const selector = ['全部', '美国', '中国', '巴西', '日本']
+const selector = ['全部', '时政消息', '党史知识', '学院要闻']
 
 const ListData = [
     {
@@ -56,19 +56,26 @@ const ListData = [
 ]
 
 
-@connect(({ counter }) => ({
-    counter
-}), (dispatch) => ({
-    add () {
-        dispatch(add())
-    },
-    dec () {
-        dispatch(minus())
-    },
-    asyncAdd () {
-        dispatch(asyncAdd())
-    }
-}))
+// @connect(state => (
+//     state
+// ), (dispatch) => ({
+//     add () {
+//         dispatch(add())
+//     },
+//     dec () {
+//         dispatch(minus())
+//     },
+//     asyncAdd () {
+//         dispatch(asyncAdd())
+//     }
+// }))
+@connect(state => (
+    state
+), {
+    add,
+    minus,
+    asyncAdd,
+})
 class Index extends Component {
 
     config = {
@@ -82,6 +89,7 @@ class Index extends Component {
         // console.log(this.props, nextProps)
     }
     componentDidMount() {
+        // this.props.dispatchPropsFn.add()
     }
 
     onPickerChange = e => {
@@ -90,31 +98,19 @@ class Index extends Component {
         })
     }
     onScrolltoupper = () => {
-        Taro.showToast({
-            title: '到顶了',
-            icon: 'none',
-            duration: 1000
-        })
+        util.showToast('到顶了')
     }
     onScrollToLower = () => {
-        Taro.showToast({
-            title: '我是有底线的',
-            icon: 'none',
-            duration: 1000
-        })
+        util.showToast('我是有底线的')
     }
     gotoDetail = e => {
-        const id = getEventData(e,'articleid')
+        const id = util.getEventData(e,'articleid')
         console.log(id)
     }
     render () {
+        console.log(this.props)
         return (
             <View className='index'>
-                {/* <Button className='add_btn' onClick={this.props.add}>+</Button>
-                <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-                <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-                <View><Text>{this.props.counter.num}</Text></View>
-                <View><Text className='test'>Hello, World</Text></View> */}
                 <Swiper
                     className='test-h'
                     indicatorColor='#999'
@@ -139,7 +135,7 @@ class Index extends Component {
                     <View className='select_container'>
                         <Picker mode='selector' range={selector} onChange={this.onPickerChange} className='picker_self'>
                             <View className='picker' style={{ width: '100%', height: '100rpx' }}>
-                                当前选择：{selector[this.state.selectorChecked]}
+                                当前选择：<Text className='picker_value'>{selector[this.state.selectorChecked]}</Text>（点击选择）
                                 <Image className='picker_icon' src={XIALA} />
                             </View>
                         </Picker>
