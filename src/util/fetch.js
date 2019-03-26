@@ -31,13 +31,16 @@ export default function fetch(options) {
             // if (showErrorToast) {
             //     messageToast(data || '请求接口失败')
             // }
+            // var error = new Error(data);
+            // error.response = response;
+            // throw error;
             const errMessage = {errMsg: data || '请求接口失败'}
             return Promise.reject(errMessage)
         } else {
             // flag是不是1的判断
             const { flag, message, data: datas } = data
             if (flag == successFlag) {
-                return datas
+                return Promise.resolve(datas)
             } else {
                 // if (showErrorToast) {
                 //     messageToast(message || '流程错误')

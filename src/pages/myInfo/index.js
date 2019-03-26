@@ -1,10 +1,17 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: hyt
+ * @LastEditors: Please set LastEditors
+ * @Date: 2019-03-21 21:23:27
+ * @LastEditTime: 2019-03-26 18:34:04
+ * 由于小程序的限制，无法遍历 this.props.children, AtTabsPane 需要用户自行传入 current 和 index 参数。
+ */
 import Taro , { Component } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtCard } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { dispatchGetAllSign } from '@actions/myInfo.js'
 import Util from '../../util/util'
-import globalData from '@util/global.js'
 import "./myInfo.sass"
 
 
@@ -18,15 +25,40 @@ export default class MyInfo extends Component {
     }
     constructor(props) {
         super(props)
+        this.tabList = props.userAuthorized.isteacher ?
+            [{ title: '我发起的' }, { title: '全部签到' }] : [{ title: '我参与的' }, { title: '全部签到' }]
         this.state = {
-            // current: props.userAuthorized.isteacher == 0 ? 1 : 0,
-            current: props.userAuthorized.isteacher,
+            current: 0,
+            pageList: [], //不管是哪个tab，都用pageList这个map
         }
     }
-    handleClick = (value) => {
+    handleClick = current => {
         this.setState({
-            current: value
+            current,
         })
+        const { userAuthorized: { username, isTeacher } } = this.props
+        let type = ''
+        let value = ''
+        if (current === +1) {
+            // 获取全部签到列表,不区分老师，学生
+            type = 'all'
+        } else {
+            // 区分老师（发起的签到），学生（参加的签到）
+            type = !!isTeacher ? 'teacher' : 'student'
+            value = username
+        }
+        const payload = {
+            params: {
+                signType: type,
+                signValue: value,
+            },
+            successCb: (data) => {
+                this.setState({
+                    pageList: data,
+                })
+            }
+        }
+        this.props.dispatchGetAllSign(payload)
     }
     handleDetail = e => {
         const sid = Util.getEventData(e, 'sid')
@@ -36,44 +68,52 @@ export default class MyInfo extends Component {
         Taro.navigateTo(goParams).then()
     }
     componentDidMount () {
-        const { userAuthorized: { username } } = this.props
+        const { userAuthorized: { username, isTeacher } } = this.props
         const payload = {
             params: {
-                username,
+                signType: !!isTeacher ? 'teacher' : 'student',
+                signValue: username,
             },
-            successCb: () => {}
+            successCb: (data) => {
+                this.setState({
+                    pageList: data,
+                })
+            }
         }
         this.props.dispatchGetAllSign(payload)
     }
+
     render() {
-        const { myInfo: { teacherSignInfo } } = this.props
-        const tabList = [{ title: '我发起的' }, { title: '我参与的' }]
+        const { pageList, current } = this.state
         return (
             <View className='container'>
-                <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick}>
-                    <AtTabsPane current={this.state.current} index={0}>
-                        <View className='teacher_container'>
-                            {
-                                teacherSignInfo.length > 0 ?
-                                    teacherSignInfo.map((item, index) => {
-                                        const { sid, username, title, location, starttime, endtime } = item
-                                        return (
-                                            <View key={index} data-sid={sid} onClick={this.handleDetail} className='teacher_container_item'>
-                                                <Text className='item_title'>{title}</Text>
-                                                {/* <Text className='item_username'>{username}</Text> */}
-                                                <Text className='item_location'>{location}</Text>
-                                                <View className='clearfix' />
-                                                <Text className='item_starttime'>开始时间：{starttime}</Text>
-                                                <Text className='item_endtime'>截止时间：{endtime}</Text>
-                                            </View>
-                                        )
-                                    }) : <Text>暂无</Text>
-                            }
-                        </View>
-                    </AtTabsPane>
-                    <AtTabsPane current={this.state.current} index={1}>
-                        <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页二的内容</View>
-                    </AtTabsPane>
+                <AtTabs current={current} tabList={this.tabList} onClick={this.handleClick}>
+                    {
+                        [...new Array(this.tabList.length)].map((ele, indexs) => (
+                            <AtTabsPane current={current} key={+indexs} index={indexs}>
+                                <View className='teacher_container'>
+                                    {
+                                        pageList.length > 0 ?
+                                            pageList.map((item, index) => {
+                                                const { sid, username, title, location, starttime, endtime } = item
+                                                return (
+                                                    <View key={index} data-sid={sid} onClick={this.handleDetail} className='teacher_container_item'>
+                                                        <AtCard
+                                                            title={title}
+                                                            note={username.toString()}
+                                                            extra={location}
+                                                        >
+                                                            <View>开始时间：{starttime}</View>
+                                                            <View>截止时间：{endtime}</View>
+                                                        </AtCard>
+                                                    </View>
+                                                )
+                                            }) : <Text>暂无</Text>
+                                    }
+                                </View>
+                            </AtTabsPane>
+                        ))
+                    }
                 </AtTabs>
             </View>
         );

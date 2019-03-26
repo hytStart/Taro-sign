@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text, Swiper, SwiperItem, Image, Picker, ScrollView } from '@tarojs/components'
+import { View, Text, Swiper, SwiperItem, Image, ScrollView } from '@tarojs/components'
+import { AtSearchBar, AtCard  } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import util from '@util/util'
@@ -7,15 +8,13 @@ import SwiperImg1 from '@assets/swiper1.jpg'
 import SwiperImg2 from '@assets/swiper2.jpg'
 import SwiperImg3 from '@assets/swiper3.jpg'
 
-import XIALA from '@assets/xiala.png'
-
-import { add, minus, asyncAdd } from '@actions/news.js'
+import {
+    dispatchGetNewsList,
+    dispatchGetNewsDetail,
+} from '@actions/news.js'
 
 import './index.sass'
 
-const getEventData = (data, tag) => {
-    return data.currentTarget.dataset[tag];
-}
 const swiperData = [
     {
         url: SwiperImg1,
@@ -30,31 +29,7 @@ const swiperData = [
         name: '3',
     },
 ]
-const selector = ['全部', '时政消息', '党史知识', '学院要闻']
-
-const ListData = [
-    {
-        id: '1',
-        title: '标题1',
-        time: '2018-01-02',
-    },
-    {
-        id: '2',
-        title: '标题2',
-        time: '2018-01-02',
-    },
-    {
-        id: '3',
-        title: '标题3',
-        time: '2018-01-02',
-    },
-    {
-        id: '4',
-        title: '标题4',
-        time: '2018-01-02',
-    },
-]
-
+const selector = ['时政消息', '党史知识', '学院要闻']
 
 // @connect(state => (
 //     state
@@ -72,9 +47,8 @@ const ListData = [
 @connect(state => (
     state
 ), {
-    add,
-    minus,
-    asyncAdd,
+    dispatchGetNewsList,
+    dispatchGetNewsDetail,
 })
 class Index extends Component {
 
@@ -82,21 +56,67 @@ class Index extends Component {
         navigationBarTitleText: '北邮时政'
     }
     state = {
-        selectorChecked: 0,
+        searchValue: '',
+        categoryState: false,
     }
 
     componentWillReceiveProps (nextProps) {
         // console.log(this.props, nextProps)
     }
     componentDidMount() {
-        // this.props.dispatchPropsFn.add()
+        const payload = {
+            params: {
+                newsType: 'all',
+                newsValue: '',
+            },
+            successCb: () => {}
+        }
+        this.props.dispatchGetNewsList(payload)
     }
-
-    onPickerChange = e => {
+    onChange = searchValue => {
         this.setState({
-            selectorChecked: e.detail.value,
+            searchValue,
         })
     }
+    onFocus = () => {
+        this.setState({
+            categoryState: true,
+        })
+    }
+    categoryClick = e => {
+        const categoryValue = util.getEventData(e, 'categoryvalue')
+        const payload = {
+            params: {
+                newsType: 'category',
+                newsValue: categoryValue,
+            },
+            successCb: () => {
+                this.setState({
+                    categoryState: false,
+                    searchValue: categoryValue,
+                })
+            }
+        }
+        this.props.dispatchGetNewsList(payload)
+    }
+    onActionClick = () => {
+        const { searchValue } = this.state
+        let type = 'keyword'
+        if (!searchValue) type = 'all'
+        const payload = {
+            params: {
+                newsType: type,
+                newsValue: searchValue,
+            },
+            successCb: () => {
+                this.setState({
+                    categoryState: false,
+                })
+            }
+        }
+        this.props.dispatchGetNewsList(payload)
+    }
+
     onScrolltoupper = () => {
         util.showToast('到顶了')
     }
@@ -104,11 +124,21 @@ class Index extends Component {
         util.showToast('我是有底线的')
     }
     gotoDetail = e => {
-        const id = util.getEventData(e,'articleid')
-        console.log(id)
+        const nid = util.getEventData(e,'articleid')
+        const payload = {
+            params: {
+                newsType: 'nid',
+                newsValue: nid,
+            },
+            successCb: () => {
+                Taro.navigateTo({url: '/pages/index/newsDetail'})
+            }
+        }
+        this.props.dispatchGetNewsDetail(payload)
     }
     render () {
-        console.log(this.props)
+        const { searchValue, categoryState } = this.state
+        const { news: { newsList } } = this.props
         return (
             <View className='index'>
                 <Swiper
@@ -131,15 +161,25 @@ class Index extends Component {
                 </Swiper>
                 {/* 查询框 */}
                 <View className='page-section'>
-                    <Text>主题查询</Text>
-                    <View className='select_container'>
-                        <Picker mode='selector' range={selector} onChange={this.onPickerChange} className='picker_self'>
-                            <View className='picker' style={{ width: '100%', height: '100rpx' }}>
-                                当前选择：<Text className='picker_value'>{selector[this.state.selectorChecked]}</Text>（点击选择）
-                                <Image className='picker_icon' src={XIALA} />
-                            </View>
-                        </Picker>
-                    </View>
+                    <AtSearchBar
+                        showActionButton
+                        value={searchValue}
+                        onChange={this.onChange}
+                        onFocus={this.onFocus}
+                        onActionClick={this.onActionClick}
+                    />
+                    {
+                        categoryState ? 
+                            <View className='category-container'>
+                                {
+                                    selector.map((item, index) => (
+                                        <View className='category-item' key={index} data-categoryvalue={item} onClick={this.categoryClick}>
+                                            {item}
+                                        </View>
+                                    ))
+                                }
+                            </View> : null
+                    }
                 </View>
                 {/* 内容 */}
                 <ScrollView
@@ -155,16 +195,25 @@ class Index extends Component {
                     // onScroll={this.onScroll}
                 >
                     {
-                        ListData.map((item, index) => {
+                        newsList.map((item, index) => {
                             const {
-                                id,
-                                title,
+                                nid,
                                 time,
+                                title,
+                                newsimg,
+                                content,
+                                category,
                             } = item
                             return (
-                                <View key={index} style='height:150px' data-articleid={item.id} onClick={this.gotoDetail}>
-                                    <Text>标题：{title}</Text>
-                                    <Text>时间：{time}</Text>
+                                <View key={index} style='margin-bottom: 10rpx;' data-articleid={nid} onClick={this.gotoDetail}>
+                                    <AtCard
+                                        thumb={newsimg}
+                                        title={title}
+                                        note={time}
+                                        extra={category}
+                                    >
+                                        {content && content.slice(0, 26)}
+                                    </AtCard>
                                 </View>
                             )
                         })

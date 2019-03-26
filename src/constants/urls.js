@@ -21,3 +21,5 @@ export const SIGN_RECORD_URL = `${url}/signRecord`
 export const GET_ALL_SIGN_URL = `${url}/allSign`
 // 根据sid查询某一次签到的所有人员
 export const GET_SIGN_DETAIL_URL = `${url}/searchStudent`
+// 查询新闻list
+export const GET_NEWS_LIST_URL = `${url}/searchNews`

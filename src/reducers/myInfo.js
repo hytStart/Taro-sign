@@ -14,12 +14,23 @@ const INITIAL_STATE = {
         starttime: '',
         endtime: '',
     }],
-    signRecordDetail: [{
-        sid: 122,
-        username: 125,
-        name: '',
-        time: '',
-    }]
+    signRecordInfo: {
+        sign: {
+            sid: 122,
+            name: 125,
+            title: '',
+            location: '',
+            starttime: '',
+            endtime: '',
+            qrcode: '',
+        },
+        list: [{
+            sid: 122,
+            username: 125,
+            name: '',
+            time: '',
+        }]
+    }
 }
 
 export default function myInfo(state = INITIAL_STATE, action) {
@@ -45,12 +56,12 @@ export default function myInfo(state = INITIAL_STATE, action) {
     case GET_SIGN_RECORD_DETAIL_SUCCEEDED:
         const {
             payload: {
-                params: signRecordDetail,
+                params: signRecordInfo,
             }
         } = action
         return {
             ...state,
-            signRecordDetail,
+            signRecordInfo,
         }
     case GET_SIGN_RECORD_DETAIL_FAILED:
         return {

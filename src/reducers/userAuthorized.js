@@ -6,7 +6,7 @@ import {
 
 const INITIAL_STATE = {
     username: 2018140442,
-    isteacher: 0,
+    isteacher: 1,
     name: "",
     openid: "",
 }

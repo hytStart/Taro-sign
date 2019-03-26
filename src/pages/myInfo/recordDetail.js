@@ -1,5 +1,6 @@
 import Taro , { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
+import { AtList, AtListItem, AtCard, AtDivider } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import Util from '@util/util'
 import {
@@ -31,25 +32,45 @@ export default class recordDetail extends Component {
         this.props.dispatchGetSignDetail(payload)
     }
     render() {
-        const { myInfo: { signRecordDetail } } = this.props
+        const { myInfo: { signRecordInfo: { sign: {
+            name,
+            title,
+            location,
+            starttime,
+            endtime,
+            qrcode,
+        }, list } } } = this.props
         return (
             <View className='teacher_container'>
-                {
-                    signRecordDetail.length > 0 ?
-                        signRecordDetail.map((item, index) => {
-                            const { sid, username, name, time } = item
-                            return (
-                                <View key={index} data-sid={sid} onClick={this.handleDetail} className='teacher_container_detail'>
-                                    <Text className='item_title'>{name}</Text>
-                                    <Text className='item_location'>{username}</Text>
-                                    <View className='clearfix' />
-                                    <Text className='item_starttime'>签到时间：{time}</Text>
-                                </View>
-                            )
-                        })
-                        :
-                        <Text>暂无</Text>
-                }
+                <AtCard
+                    title={!!title ? title.toString() : ''}
+                    note={!!name ? name.toString() : ''}
+                    extra={!!location ? location : ''}
+                >
+                    <View>开始时间：{starttime}</View>
+                    <View>截止时间：{endtime}</View>
+                    <Image className='sign_qrcode' src={qrcode}></Image>
+                </AtCard>
+                <AtDivider content={`签到人员(${list.length}个)`} fontColor='#2d8cf0' lineColor='#2d8cf0' />
+                <AtList>
+                    {
+                        list.length > 0 ?
+                            list.map((item, index) => {
+                                const { sid, username, name, time } = item
+                                return (
+                                    <View key={index} className='teacher_container_detail'>
+                                        <AtListItem
+                                            title={name.toString()}
+                                            note={`签到时间：${time}`}
+                                            extraText={username.toString()}
+                                        />
+                                    </View>
+                                )
+                            })
+                            :
+                            <Text>暂无</Text>
+                    }
+                </AtList>
             </View>
         );
     }

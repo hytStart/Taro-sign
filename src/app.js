@@ -21,13 +21,13 @@ class App extends Component {
 
     config = {
         pages: [
-            'pages/index/index',
             'pages/myInfo/index',
             'pages/myInfo/recordDetail',
+            'pages/userAuthorized/index',  
+            'pages/index/index',
+            'pages/index/newsDetail',
             'pages/home/index',
             'pages/qrcode/qrcode',
-            'pages/teacherSignInformation/index',
-            'pages/userAuthorized/index',   
             'pages/information/index',
         ],
         window: {
