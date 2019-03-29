@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtIcon } from 'taro-ui'
 import {
 } from '@actions/information.js'
-
+import util from '@util/util.js'
 
 @connect(state => state.information, {
 })
@@ -18,6 +18,7 @@ export default class InformationDetail extends Component {
     componentDidMount () {
     }
     handleDownload = () => {
+        Taro.showLoading()
         const { informationDetal: { url } } = this.props
         const params = {
             url,
@@ -25,15 +26,16 @@ export default class InformationDetail extends Component {
             success(res) {
                 // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
                 if (res.statusCode === 200) {
-                    console.log("path   "+res.tempFilePath)
+                    const wxPath = res.tempFilePath
                     Taro.openDocument({
-                        filePath: res.tempFilePath,
+                        filePath: wxPath,
                         fileType: "doc",
                         success: function (ress) {
-                            console.log('打开文档成功')
+                            Taro.hideLoading()
+                            console.log(ress)
                         },
                         fail: function (resf) {
-                            console.log(resf);
+                            util.showToast('打开文档失败')
                         },
                         complete: function (resc) {
                             console.log(resc);
@@ -42,7 +44,8 @@ export default class InformationDetail extends Component {
                 }
             },
             fail: function (resa) {
-                console.log('文件下载失败');
+                Taro.hideLoading()
+                util.showToast('文件下载失败')
             },
         }
         Taro.downloadFile(params).then()
