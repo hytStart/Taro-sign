@@ -21,6 +21,8 @@ class App extends Component {
 
     config = {
         pages: [
+            'pages/information/index',
+            'pages/information/informationDetail',
             'pages/myInfo/index',
             'pages/myInfo/recordDetail',
             'pages/userAuthorized/index',  
@@ -28,7 +30,6 @@ class App extends Component {
             'pages/index/newsDetail',
             'pages/home/index',
             'pages/qrcode/qrcode',
-            'pages/information/index',
         ],
         window: {
             backgroundTextStyle: 'light',

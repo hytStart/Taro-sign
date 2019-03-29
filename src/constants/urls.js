@@ -1,8 +1,9 @@
 export const host = 'http://localhost:8227/api'
 export const prodUrl = 'https://www.niushaoda.club:8080'
+export const mockUrl = 'https://easy-mock.com/mock/5c9ca639d2180133f8e46ca6/api'
 let url
 if (true) {
-    url = host
+    url = mockUrl
 } else {
     url = prodUrl
 }
@@ -23,3 +24,5 @@ export const GET_ALL_SIGN_URL = `${url}/allSign`
 export const GET_SIGN_DETAIL_URL = `${url}/searchStudent`
 // 查询新闻list
 export const GET_NEWS_LIST_URL = `${url}/searchNews`
+// 搜索资料
+export const GET_INFORMATION_LIST_URL = `${url}/searchResource`
