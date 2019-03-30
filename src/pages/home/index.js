@@ -49,15 +49,13 @@ export default class Home extends Component {
                     success(res) {
                         const latitudeGet = res.latitude
                         const longitudeGet = res.longitude
-                        console.log('latitudeGet', latitudeGet)
-                        console.log('longitudeGet', longitudeGet)
                         const payload = {
                             params: {
                                 sid: result,
                                 username,
                                 name,
-                                longitude: latitudeGet,
-                                latitude: longitudeGet,
+                                longitude: longitudeGet,
+                                latitude: latitudeGet,
                             },
                             successCb: () => {
                                 util.showToast('签到成功', 'success', 2000)
