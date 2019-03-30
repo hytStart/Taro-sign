@@ -56,11 +56,11 @@ export default class recordDetail extends Component {
                     {
                         list.length > 0 ?
                             list.map((item, index) => {
-                                const { sid, username, name, time } = item
+                                const { sid, username, name: studentName, time } = item
                                 return (
                                     <View key={index} className='teacher_container_detail'>
                                         <AtListItem
-                                            title={name.toString()}
+                                            title={studentName ? studentName.toString() : null}
                                             note={`签到时间：${time}`}
                                             extraText={username.toString()}
                                         />

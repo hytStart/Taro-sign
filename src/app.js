@@ -21,14 +21,14 @@ class App extends Component {
 
     config = {
         pages: [
+            'pages/userAuthorized/index',  
+            'pages/home/index',
+            'pages/index/index',
             'pages/information/index',
             'pages/information/informationDetail',
             'pages/myInfo/index',
             'pages/myInfo/recordDetail',
-            'pages/userAuthorized/index',  
-            'pages/index/index',
             'pages/index/newsDetail',
-            'pages/home/index',
             'pages/qrcode/qrcode',
         ],
         window: {
@@ -67,23 +67,23 @@ class App extends Component {
     }
 
     componentDidMount () {
-        // const { userInfo } = globalData
-        // if (Object.keys(userInfo).length === 0) {
-        //     Taro.getSetting({
-        //         success: res => {
-        //             if (res.authSetting['scope.userInfo']) {
-        //                 // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-        //                 Taro.getUserInfo({
-        //                     success: resS => {
-        //                         // 可以将 res 发送给后台解码出 unionId
-        //                         globalData.userInfo = resS.userInfo
-        //                     }
-        //                 })
-        //             }
-        //         }
-        //     }).then()
-        // }
-        // Taro.navigateTo({url: '/pages/userAuthorized/index'})
+        const { userInfo } = globalData
+        if (Object.keys(userInfo).length === 0) {
+            Taro.getSetting({
+                success: res => {
+                    if (res.authSetting['scope.userInfo']) {
+                        // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+                        Taro.getUserInfo({
+                            success: resS => {
+                                // 可以将 res 发送给后台解码出 unionId
+                                globalData.userInfo = resS.userInfo
+                            }
+                        })
+                    }
+                }
+            }).then()
+        }
+        Taro.navigateTo({url: '/pages/userAuthorized/index'})
     }
 
     componentDidShow () {

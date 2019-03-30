@@ -125,7 +125,7 @@ class UserAtuthorized extends Component {
             params: {
                 username: stuid,
                 password,
-                isteacher: 0, // 不知道是不是老师，暂定传0
+                // isteacher: 0, // 不知道是不是老师，数据库写死，根据username来判断
                 openid,
             },
             successCb: () => {

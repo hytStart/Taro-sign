@@ -47,17 +47,49 @@ export default class Information extends Component {
         }
         this.props.dispatchGetInformation(payload)
     }
-    handleInformationDetail = rid => {
-        const payload ={
-            params: {
-                resourceType: 'rid',
-                resourceValue: rid,
+    // handleInformationDetail = rid => {
+    //     const payload ={
+    //         params: {
+    //             resourceType: 'rid',
+    //             resourceValue: rid,
+    //         },
+    //         successCb: () => {
+    //             Taro.navigateTo({url: '/pages/information/informationDetail'})
+    //         }
+    //     }
+    //     this.props.dispatchGetInformationDetail(payload)
+    // }
+    handleInformationDetail = url => {
+        Taro.showLoading()
+        const params = {
+            url,
+            fileType: "doc",
+            success(res) {
+                // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                if (res.statusCode === 200) {
+                    const wxPath = res.tempFilePath
+                    Taro.openDocument({
+                        filePath: wxPath,
+                        fileType: "doc",
+                        success: function (ress) {
+                            Taro.hideLoading()
+                            console.log(ress)
+                        },
+                        fail: function (resf) {
+                            util.showToast('打开文档失败')
+                        },
+                        complete: function (resc) {
+                            console.log(resc);
+                        }
+                    })
+                }
             },
-            successCb: () => {
-                Taro.navigateTo({url: '/pages/information/informationDetail'})
-            }
+            fail: function (resa) {
+                Taro.hideLoading()
+                util.showToast('文件下载失败')
+            },
         }
-        this.props.dispatchGetInformationDetail(payload)
+        Taro.downloadFile(params).then()
     }
     render() {
         const { keyWord } = this.state
@@ -73,7 +105,7 @@ export default class Information extends Component {
                 <AtList>
                     {
                         allInformation.map((item, index) => {
-                            const { title, content, rid } = item
+                            const { title, content, rid, url } = item
                             return (
                                 <AtListItem
                                     arrow='right'
@@ -82,7 +114,7 @@ export default class Information extends Component {
                                     extraText={content}
                                     key={index}
                                     data-rid={rid}
-                                    onClick={this.handleInformationDetail.bind(this, rid)}
+                                    onClick={this.handleInformationDetail.bind(this, url)}
                                 />
                             )
                         })

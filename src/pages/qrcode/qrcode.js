@@ -64,6 +64,8 @@ export default class Qrcode extends Component {
                 title,
                 location,
                 endtime: `${dateSel} ${timeSel}`,
+                longitude: 36,
+                latitude: 85,
             },
             successCb: (res) => {
                 const { qrcode } = res

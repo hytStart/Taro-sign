@@ -25,7 +25,7 @@ export default class MyInfo extends Component {
     }
     constructor(props) {
         super(props)
-        this.tabList = props.userAuthorized.isteacher ?
+        this.tabList = +props.userAuthorized.isteacher ?
             [{ title: '我发起的' }, { title: '全部签到' }] : [{ title: '我参与的' }, { title: '全部签到' }]
         this.state = {
             current: 0,
@@ -36,15 +36,15 @@ export default class MyInfo extends Component {
         this.setState({
             current,
         })
-        const { userAuthorized: { username, isTeacher } } = this.props
+        const { userAuthorized: { username, isteacher } } = this.props
         let type = ''
         let value = ''
-        if (current === +1) {
+        if (+current === 1) {
             // 获取全部签到列表,不区分老师，学生
             type = 'all'
         } else {
             // 区分老师（发起的签到），学生（参加的签到）
-            type = !!isTeacher ? 'teacher' : 'student'
+            type = !!isteacher ? 'teacher' : 'student'
             value = username
         }
         const payload = {
@@ -68,10 +68,10 @@ export default class MyInfo extends Component {
         Taro.navigateTo(goParams).then()
     }
     componentDidMount () {
-        const { userAuthorized: { username, isTeacher } } = this.props
+        const { userAuthorized: { username, isteacher } } = this.props
         const payload = {
             params: {
-                signType: !!isTeacher ? 'teacher' : 'student',
+                signType: !!isteacher ? 'teacher' : 'student',
                 signValue: username,
             },
             successCb: (data) => {

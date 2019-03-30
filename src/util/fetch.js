@@ -22,7 +22,7 @@ export default function fetch(options) {
     return Taro.request({
         url,
         method,
-        data: JSON.stringify(params),
+        data: params,
     }).then(response => {
         const { statusCode, data } = response
         // 不是200以外的

@@ -47,6 +47,8 @@ export default class Home extends Component {
                         sid: result,
                         username,
                         name,
+                        longitude: 36,
+                        latitude: 85,
                     },
                     successCb: () => {
                         util.showToast('签到成功', 'success', 2000)
