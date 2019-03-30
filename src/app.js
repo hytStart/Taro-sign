@@ -22,6 +22,7 @@ class App extends Component {
     config = {
         pages: [
             'pages/userAuthorized/index',  
+            'pages/qrcode/qrcode',
             'pages/home/index',
             'pages/index/index',
             'pages/information/index',
@@ -29,13 +30,17 @@ class App extends Component {
             'pages/myInfo/index',
             'pages/myInfo/recordDetail',
             'pages/index/newsDetail',
-            'pages/qrcode/qrcode',
         ],
         window: {
             backgroundTextStyle: 'light',
             navigationBarBackgroundColor: '#fff',
             navigationBarTitleText: 'WeChat',
             navigationBarTextStyle: 'black'
+        },
+        permission: {
+            "scope.userLocation": {
+                "desc": "获取用户的签到位置"
+            }
         },
         tabBar: {
             color: "#666",

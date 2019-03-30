@@ -8,6 +8,8 @@ import {
 } from '@actions/qrcode.js'
 import './qrcode.sass'
 
+import QQMapWX from './qqmap-wx-jssdk.min.js'
+
 @connect(state => state, {
     dispatchCreactQr,
 })
@@ -16,15 +18,41 @@ export default class Qrcode extends Component {
     config = {
         navigationBarTitleText: '发起签到'
     }
-    state={
-        title: '',
-        location: '',
-        dateSel: util.formatDate(new Date()),
-        timeSel: util.formatTime(new Date()),
-        qrSrc: '',
-        qrState: false,
+    constructor() {
+        super()
+        this.qqmapsdk = new QQMapWX({
+            key: '2LMBZ-NXFKU-BV6VX-45UBC-GMB7O-6GBTN'
+        })
+        this.state={
+            title: '',
+            location: '',
+            dateSel: util.formatDate(new Date()),
+            timeSel: util.formatTime(new Date()),
+            qrSrc: '',
+            qrState: false,
+        }
     }
     componentDidMount () {
+    }
+    moveToLocation =  () => {
+        const that = this
+        Taro.chooseLocation({
+            success: function (res) {
+                const {
+                    name,
+                    latitude,
+                    longitude,
+                } = res
+                that.setState({
+                    location: name,
+                    latitude,
+                    longitude,
+                })
+            },
+            fail: function (err) {
+                console.log(err)
+            }
+        })
     }
     onTitleChange = title => {
         this.setState({
@@ -32,9 +60,10 @@ export default class Qrcode extends Component {
         })
     }
     onLocationChange = location => {
-        this.setState({
-            location,
-        })
+        // this.setState({
+        //     location,
+        // })
+        this.moveToLocation()
     }
     onDateChange = e => {
         this.setState({
@@ -57,6 +86,8 @@ export default class Qrcode extends Component {
             location,
             dateSel,
             timeSel,
+            longitude,
+            latitude,
         } = this.state
         const payload = {
             params: {
@@ -64,8 +95,8 @@ export default class Qrcode extends Component {
                 title,
                 location,
                 endtime: `${dateSel} ${timeSel}`,
-                longitude: 36,
-                latitude: 85,
+                longitude,
+                latitude,
             },
             successCb: (res) => {
                 const { qrcode } = res
@@ -100,14 +131,16 @@ export default class Qrcode extends Component {
                         value={title}
                         onChange={this.onTitleChange}
                     />
-                    <AtInput
+                    {/* <AtInput
                         name='value'
                         title='签到地点'
                         type='text'
                         placeholder='签到地点'
                         value={location}
                         onChange={this.onLocationChange}
-                    />
+                    /> */}
+                    <AtButton onClick={this.onLocationChange} className='picker_btn' type='primary'>选择地点</AtButton>
+                    {location}
                     <View className='page-section'>
                         <Text className='picker_text'>截止时间</Text>
                         <View className='picker_item'>

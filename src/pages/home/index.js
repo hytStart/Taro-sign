@@ -32,29 +32,43 @@ export default class Home extends Component {
         }
         Taro.navigateTo(goParams).then()
     }
+    // 扫码获取到信息以后，调取位置接口，判断位置，然后在签到后台接口
     scanCode = () => {
         const { userAuthorized: { isteacher } } = this.props
         if (isteacher == 1) {
             util.showToast('只有学生有该权限哦')
             return
         }
+        const that = this
         const qrParams = {
             success: (res) => {
                 const { result } = res
                 const { userAuthorized: { username, name } } = this.props
-                const payload = {
-                    params: {
-                        sid: result,
-                        username,
-                        name,
-                        longitude: 36,
-                        latitude: 85,
+                Taro.getLocation({
+                    type: 'wgs84',
+                    success(res) {
+                        const latitudeGet = res.latitude
+                        const longitudeGet = res.longitude
+                        console.log('latitudeGet', latitudeGet)
+                        console.log('longitudeGet', longitudeGet)
+                        const payload = {
+                            params: {
+                                sid: result,
+                                username,
+                                name,
+                                longitude: latitudeGet,
+                                latitude: longitudeGet,
+                            },
+                            successCb: () => {
+                                util.showToast('签到成功', 'success', 2000)
+                            }
+                        }
+                        that.props.dispatchSignRecord(payload)
                     },
-                    successCb: () => {
-                        util.showToast('签到成功', 'success', 2000)
+                    fail() {
+                        util.showToast('获取位置失败')
                     }
-                }
-                this.props.dispatchSignRecord(payload)
+                })
             }
         }
         Taro.scanCode(qrParams).then()
