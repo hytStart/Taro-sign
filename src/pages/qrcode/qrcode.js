@@ -139,8 +139,10 @@ export default class Qrcode extends Component {
                         value={location}
                         onChange={this.onLocationChange}
                     /> */}
-                    <AtButton onClick={this.onLocationChange} className='picker_btn' type='primary'>选择地点</AtButton>
-                    {location}
+                    <View style={{ display: 'flex', alignItems: 'center', paddingLeft: '20rpx' }}>
+                        <AtButton size='small' onClick={this.onLocationChange} className='picker_btn' type='primary'>选择地点</AtButton>
+                        <Text>{!!location ? `(${location})` : null}</Text>
+                    </View>
                     <View className='page-section'>
                         <Text className='picker_text'>截止时间</Text>
                         <View className='picker_item'>
