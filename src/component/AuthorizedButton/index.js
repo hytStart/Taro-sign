@@ -2,12 +2,18 @@ import Taro , { Component } from '@tarojs/taro';
 import { View, Text , Button} from '@tarojs/components';
 import { AtButton } from 'taro-ui'
 import globalData from '../../util/global.js'
+import './index.sass'
+
 
 export default class AuthorizedButton extends Component {
     static defaultProps = {
         onCloseAuthorizeFn: () =>{},
         value: 0,
     }
+    // static options = {
+    //     addGlobalClass: true
+    // }
+    static externalClasses = ['my-class']
     constructor() {
         super(...arguments)
         this.state={}
@@ -25,12 +31,12 @@ export default class AuthorizedButton extends Component {
     }
     render() {
         return (
-            <View>
+            <View className="my-class">
                 <AtButton
                     type='primary'
-                    circle
                     openType='getUserInfo'
                     onGetUserInfo={this.onGetUserInfo}
+                    circle
                 >
                     授权登录
                 </AtButton>

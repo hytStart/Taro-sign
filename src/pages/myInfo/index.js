@@ -3,16 +3,17 @@
  * @Author: hyt
  * @LastEditors: Please set LastEditors
  * @Date: 2019-03-21 21:23:27
- * @LastEditTime: 2019-04-01 10:45:05
+ * @LastEditTime: 2019-04-01 11:41:07
  * 由于小程序的限制，无法遍历 this.props.children, AtTabsPane 需要用户自行传入 current 和 index 参数。
  */
 import Taro , { Component } from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import { AtTabs, AtTabsPane, AtCard } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { dispatchGetAllSign } from '@actions/myInfo.js'
 import Util from '../../util/util'
 import "./myInfo.sass"
+import globalData from '@util/global.js'
 
 
 @connect(state => state, {
@@ -85,8 +86,13 @@ export default class MyInfo extends Component {
 
     render() {
         const { pageList, current } = this.state
+        const { userInfo } = globalData
         return (
             <View className='container'>
+                <View class='userinfo'>
+                    <Image class='userinfo-avatar' src={userInfo.avatarUrl} background-size='over'></Image>
+                    <Text class='userinfo-nickname'>{userInfo.nickName}</Text>
+                </View>
                 <AtTabs current={current} tabList={this.tabList} onClick={this.handleClick}>
                     {
                         [...new Array(this.tabList.length)].map((ele, indexs) => (

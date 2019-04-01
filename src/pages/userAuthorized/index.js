@@ -4,7 +4,6 @@ import { connect } from '@tarojs/redux'
 import { AtInput, AtButton } from 'taro-ui'
 
 import {
-    testActions,
     dispatchGetUserInfoActions,
     dispatchBoundUser,
 } from '@actions/userAuthorized.js'
@@ -142,10 +141,12 @@ class UserAtuthorized extends Component {
     render() {
         const { authorizeButton, boundModuleState } = this.state
         return (
-            <View>
+            <View className='button_container'>
                 {
                     authorizeButton ?
-                        <AuthorizedButton onCloseAuthorizeFn={this.closeAuthorizeButton} value={1} /> : null
+                        <View className='button_container_bu'>
+                            <AuthorizedButton onCloseAuthorizeFn={this.closeAuthorizeButton} value={1} my-class='child-container' />
+                        </View>  : null
                 }
                 {
                     boundModuleState ?
