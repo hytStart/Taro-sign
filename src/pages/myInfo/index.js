@@ -3,7 +3,7 @@
  * @Author: hyt
  * @LastEditors: Please set LastEditors
  * @Date: 2019-03-21 21:23:27
- * @LastEditTime: 2019-03-26 18:34:04
+ * @LastEditTime: 2019-04-01 10:45:05
  * 由于小程序的限制，无法遍历 this.props.children, AtTabsPane 需要用户自行传入 current 和 index 参数。
  */
 import Taro , { Component } from '@tarojs/taro';
@@ -67,7 +67,7 @@ export default class MyInfo extends Component {
         }
         Taro.navigateTo(goParams).then()
     }
-    componentDidMount () {
+    componentDidShow () {
         const { userAuthorized: { username, isteacher } } = this.props
         const payload = {
             params: {
