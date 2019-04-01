@@ -108,7 +108,7 @@ export default class Information extends Component {
                             const { title, content, rid, url } = item
                             return (
                                 <AtListItem
-                                    arrow='right'
+                                    arrow='down'
                                     note={content ? content.slice(0, 10): ''}
                                     title={title}
                                     extraText={content}
