@@ -27,6 +27,7 @@ export default function fetch(options) {
         const { statusCode, data } = response
         // 不是200以外的
         if (statusCode != successStatus) {
+            const { error } = data
             // 因为走了这个错误，还会继续走catch，所以写成对象，reject出去。showToast在catch里执行。
             // if (showErrorToast) {
             //     messageToast(data || '请求接口失败')
@@ -34,7 +35,7 @@ export default function fetch(options) {
             // var error = new Error(data);
             // error.response = response;
             // throw error;
-            const errMessage = {errMsg: data || '请求接口失败'}
+            const errMessage = {errMsg: error || '请求接口失败'}
             return Promise.reject(errMessage)
         } else {
             // flag是不是1的判断
