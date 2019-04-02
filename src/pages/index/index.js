@@ -31,6 +31,8 @@ const swiperData = [
 ]
 const selector = ['时政消息', '党史知识', '学院要闻']
 
+let time = null
+
 // @connect(state => (
 //     state
 // ), (dispatch) => ({
@@ -79,8 +81,15 @@ class Index extends Component {
         })
     }
     onFocus = () => {
+        clearTimeout(time)
         this.setState({
             categoryState: true,
+        }, () => {
+            time = setTimeout(() => {
+                this.setState({
+                    categoryState: false,
+                })
+            }, 4000)
         })
     }
     categoryClick = e => {
@@ -187,7 +196,7 @@ class Index extends Component {
                     scrollY
                     scrollWithAnimation
                     scrollTop='0'
-                    style='height: 450rpx;'
+                    style='height:calc(100vh - 484rpx)'
                     lowerThreshold='20'
                     upperThreshold='20'
                     onScrolltoupper={this.onScrolltoupper}

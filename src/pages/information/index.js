@@ -1,6 +1,6 @@
 import Taro , { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import { AtSearchBar, AtList, AtListItem } from 'taro-ui'
+import { AtSearchBar, AtList, AtListItem, AtNoticebar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import {
     dispatchGetInformation,
@@ -102,6 +102,9 @@ export default class Information extends Component {
                     onChange={this.onKeywordChange}
                     onActionClick={this.onActionClick}
                 />
+                <AtNoticebar icon='volume-plus' marquee>
+                    温馨提示：点击相应资料，即可下载模板。如需编辑，请转发至电脑。
+                </AtNoticebar>
                 <AtList>
                     {
                         allInformation.map((item, index) => {

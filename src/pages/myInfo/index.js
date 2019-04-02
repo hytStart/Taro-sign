@@ -3,7 +3,7 @@
  * @Author: hyt
  * @LastEditors: Please set LastEditors
  * @Date: 2019-03-21 21:23:27
- * @LastEditTime: 2019-04-01 11:41:07
+ * @LastEditTime: 2019-04-02 11:39:19
  * 由于小程序的限制，无法遍历 this.props.children, AtTabsPane 需要用户自行传入 current 和 index 参数。
  */
 import Taro , { Component } from '@tarojs/taro';
@@ -70,15 +70,32 @@ export default class MyInfo extends Component {
     }
     componentDidShow () {
         const { userAuthorized: { username, isteacher } } = this.props
-        const payload = {
-            params: {
-                signType: !!isteacher ? 'teacher' : 'student',
-                signValue: username,
-            },
-            successCb: (data) => {
-                this.setState({
-                    pageList: data,
-                })
+        const { current } = this.state
+        // fix当tab在1时，切换到别的页面，再回到myinfo。显示的是1，实际请求0
+        let payload = {}
+        if (+current === 0) {
+            payload = {
+                params: {
+                    signType: !!isteacher ? 'teacher' : 'student',
+                    signValue: username,
+                },
+                successCb: (data) => {
+                    this.setState({
+                        pageList: data,
+                    })
+                }
+            }
+        } else {
+            payload = {
+                params: {
+                    signType: 'all',
+                    signValue: '',
+                },
+                successCb: (data) => {
+                    this.setState({
+                        pageList: data,
+                    })
+                }
             }
         }
         this.props.dispatchGetAllSign(payload)
@@ -89,10 +106,10 @@ export default class MyInfo extends Component {
         const { userInfo } = globalData
         return (
             <View className='container'>
-                <View class='userinfo'>
+                {/* <View class='userinfo'>
                     <Image class='userinfo-avatar' src={userInfo.avatarUrl} background-size='over'></Image>
                     <Text class='userinfo-nickname'>{userInfo.nickName}</Text>
-                </View>
+                </View> */}
                 <AtTabs current={current} tabList={this.tabList} onClick={this.handleClick}>
                     {
                         [...new Array(this.tabList.length)].map((ele, indexs) => (
@@ -101,12 +118,12 @@ export default class MyInfo extends Component {
                                     {
                                         pageList.length > 0 ?
                                             pageList.map((item, index) => {
-                                                const { sid, username, title, location, starttime, endtime } = item
+                                                const { sid, username, title, location, starttime, endtime, name } = item
                                                 return (
                                                     <View key={index} data-sid={sid} onClick={this.handleDetail} className='teacher_container_item'>
                                                         <AtCard
                                                             title={title}
-                                                            note={username.toString()}
+                                                            note={!!name && name.toString()}
                                                             extra={location}
                                                         >
                                                             <View>开始时间：{starttime}</View>

@@ -2,7 +2,6 @@ import Taro , { Component } from '@tarojs/taro';
 import { View, Text , Button} from '@tarojs/components';
 import { AtButton } from 'taro-ui'
 import globalData from '../../util/global.js'
-import './index.sass'
 
 
 export default class AuthorizedButton extends Component {
