@@ -1,5 +1,6 @@
-import Taro , { Component } from '@tarojs/taro';
-import { View, Text, Image} from '@tarojs/components';
+import Taro , { Component } from '@tarojs/taro'
+import { View, Text, Image} from '@tarojs/components'
+import { AtModal } from "taro-ui"
 import { connect } from '@tarojs/redux'
 import SaoMiao from '@assets/saomiao.png'
 import ShengCheng from '@assets/shengcheng.png'
@@ -18,7 +19,10 @@ export default class Home extends Component {
     config = {
         navigationBarTitleText: '签到'
     }
-    state={}
+    state={
+        isOpened: false,
+        errorInfo: '',
+    }
     componentDidMount () {
     }
     creatCode = () => {
@@ -59,6 +63,12 @@ export default class Home extends Component {
                             },
                             successCb: () => {
                                 util.showToast('签到成功', 'success', 2000)
+                            },
+                            failCb: (e) => {
+                                that.setState({
+                                    isOpened: true,
+                                    errorInfo: e,
+                                })
                             }
                         }
                         that.props.dispatchSignRecord(payload)
@@ -71,7 +81,14 @@ export default class Home extends Component {
         }
         Taro.scanCode(qrParams).then()
     }
+    handleConfirm = () => {
+        this.setState({
+            isOpened: false,
+            errorInfo: '',
+        })
+    }
     render() {
+        const { isOpened, errorInfo } = this.state
         return (
             <View className='container'>
                 <View className='container_item' onClick={this.creatCode}>
@@ -82,6 +99,12 @@ export default class Home extends Component {
                     <Image className='icon_main' src={SaoMiao} />
                     <Text className='item_text'>扫码签到</Text>
                 </View>
+                <AtModal
+                    isOpened={isOpened}
+                    confirmText='确认'
+                    onConfirm={ this.handleConfirm }
+                    content={errorInfo}
+                />
             </View>
         );
     }
