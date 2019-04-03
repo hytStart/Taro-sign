@@ -49,7 +49,7 @@ export default class Home extends Component {
                 const { result } = res
                 const { userAuthorized: { username, name } } = this.props
                 Taro.getLocation({
-                    type: 'wgs84',
+                    type: 'gcj02',
                     success(res) {
                         const latitudeGet = res.latitude
                         const longitudeGet = res.longitude
