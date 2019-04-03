@@ -8,6 +8,7 @@ import {
     dispatchBoundUser,
 } from '@actions/userAuthorized.js'
 import schoolImg from '@assets/swiper1.jpg'
+import schoolXiaohui from '@assets/school.png'
 import './userAu.sass'
 
 import globalData from '../../util/global.js'
@@ -145,6 +146,7 @@ class UserAtuthorized extends Component {
                 {
                     authorizeButton ?
                         <View className='button_container_bu'>
+                            <Image src={schoolXiaohui} className='button_container_bu_img' />
                             <AuthorizedButton onCloseAuthorizeFn={this.closeAuthorizeButton} value={1} my-class='child-container' />
                         </View>  : null
                 }

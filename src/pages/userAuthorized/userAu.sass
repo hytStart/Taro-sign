@@ -15,9 +15,44 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    .button_container_bu_img {
+        display: block;
+        width: 240rpx;
+        height: 240rpx;
+        animation: rotating 8s linear infinite;
+        -webkit-animation: rotating 8s linear infinite;
+        -moz-animation: rotating 8s linear infinite;
+        margin-top: -300rpx;
+        margin-bottom: 100rpx;
+    }
 }
 .child-container {
     width: 100vw;
+}
+@keyframes rotating {
+    0% {
+    	transform: rotate(0deg);
+     }
+    100% { 
+		transform: rotate(360deg);
+     }
+}
+@-webkit-keyframes rotating {
+    0% { 
+    	transform: rotate(0deg);
+     }
+    100% { 
+		transform: rotate(360deg);
+     }
+}
+@-moz-keyframes rotating {
+    0% { 
+    	transform: rotate(0deg);
+     }
+    100% { 
+		transform: rotate(360deg);
+     }
 }
