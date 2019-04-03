@@ -31,6 +31,13 @@ export default class recordDetail extends Component {
         }
         this.props.dispatchGetSignDetail(payload)
     }
+    previewImage = (e) => {
+        const current = Util.getEventData(e, 'src')
+        Taro.previewImage({
+            current: current, // 当前显示图片的http链接   
+            urls: [current] // 需要预览的图片http链接列表   
+        })
+    }
     render() {
         const { myInfo: { signRecordInfo: { sign: {
             name,
@@ -49,7 +56,7 @@ export default class recordDetail extends Component {
                 >
                     <View>开始时间：{starttime}</View>
                     <View>截止时间：{endtime}</View>
-                    <Image className='sign_qrcode' src={qrcode}></Image>
+                    <Image onClick={this.previewImage} className='sign_qrcode' src={qrcode} data-src={qrcode}></Image>
                 </AtCard>
                 <AtDivider content={`签到人员(${list.length}个)`} fontColor='#2d8cf0' lineColor='#2d8cf0' />
                 <AtList>
