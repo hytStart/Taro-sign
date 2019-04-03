@@ -105,8 +105,9 @@ class UserAtuthorized extends Component {
         Taro.login(params).then()
     }
     handleStuidChange = stuid => {
+        const value = stuid
         this.setState({
-            stuid,
+            stuid: value,
         })
     }
     handlePasswordChange = password =>{
@@ -157,7 +158,6 @@ class UserAtuthorized extends Component {
                             <AtInput
                                 name='stuid'
                                 title='学号'
-                                type='idcard'
                                 placeholder='请输入学号'
                                 value={this.state.stuid}
                                 onChange={this.handleStuidChange}

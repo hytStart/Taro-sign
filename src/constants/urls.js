@@ -2,7 +2,7 @@ export const host = 'http://localhost:8227/api'
 export const prodUrl = 'https://www.niushaoda.club:8080'
 export const mockUrl = 'https://easy-mock.com/mock/5c9ca639d2180133f8e46ca6/api'
 export const testUrl = 'http://10.210.16.237:8080'
-let url = prodUrl
+let url = mockUrl
 // if (false) {
 //     url = mockUrl
 // } else {

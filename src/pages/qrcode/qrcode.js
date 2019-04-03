@@ -10,6 +10,7 @@ import './qrcode.sass'
 
 import QQMapWX from './qqmap-wx-jssdk.min.js'
 
+
 @connect(state => state, {
     dispatchCreactQr,
 })
@@ -23,11 +24,13 @@ export default class Qrcode extends Component {
         this.qqmapsdk = new QQMapWX({
             key: '2LMBZ-NXFKU-BV6VX-45UBC-GMB7O-6GBTN'
         })
+        this.dateAfter = new Date(new Date().valueOf() + 1800000) // 默认去当前时间之后30分钟
+        console.log(this.dateAfter)
         this.state={
             title: '',
             location: '',
-            dateSel: util.formatDate(new Date()),
-            timeSel: util.formatTime(new Date()),
+            dateSel: util.formatDate(this.dateAfter),
+            timeSel: util.formatTime(this.dateAfter),
             qrSrc: '',
             qrState: false,
         }
