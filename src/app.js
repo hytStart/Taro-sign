@@ -21,9 +21,9 @@ class App extends Component {
 
     config = {
         pages: [
+            'pages/home/index',
             'pages/userAuthorized/index',  
             'pages/qrcode/qrcode',
-            'pages/home/index',
             'pages/index/index',
             'pages/information/index',
             'pages/information/informationDetail',
@@ -88,7 +88,7 @@ class App extends Component {
                 }
             }).then()
         }
-        Taro.navigateTo({url: '/pages/userAuthorized/index'})
+        Taro.redirectTo({url: '/pages/userAuthorized/index'})
     }
 
     componentDidShow () {
