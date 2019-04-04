@@ -103,7 +103,7 @@ export default class Information extends Component {
                     onActionClick={this.onActionClick}
                 />
                 <AtNoticebar icon='volume-plus' marquee>
-                    温馨提示：点击相应资料，即可下载模板。如需编辑，请转发至电脑。
+                    温馨提示：点击相应资料，即可下载模板。如需编辑，请转发至电脑。(目前只支持Android转发)
                 </AtNoticebar>
                 <AtList>
                     {
