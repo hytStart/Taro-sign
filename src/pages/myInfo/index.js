@@ -3,7 +3,7 @@
  * @Author: hyt
  * @LastEditors: Please set LastEditors
  * @Date: 2019-03-21 21:23:27
- * @LastEditTime: 2019-04-02 11:39:19
+ * @LastEditTime: 2019-04-04 15:22:54
  * 由于小程序的限制，无法遍历 this.props.children, AtTabsPane 需要用户自行传入 current 和 index 参数。
  */
 import Taro , { Component } from '@tarojs/taro';
@@ -45,7 +45,7 @@ export default class MyInfo extends Component {
             type = 'all'
         } else {
             // 区分老师（发起的签到），学生（参加的签到）
-            type = !!isteacher ? 'teacher' : 'student'
+            type = +isteacher ? 'teacher' : 'student'
             value = username
         }
         const payload = {
@@ -76,7 +76,7 @@ export default class MyInfo extends Component {
         if (+current === 0) {
             payload = {
                 params: {
-                    signType: !!isteacher ? 'teacher' : 'student',
+                    signType: +isteacher ? 'teacher' : 'student',
                     signValue: username,
                 },
                 successCb: (data) => {
