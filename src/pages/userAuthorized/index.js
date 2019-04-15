@@ -84,7 +84,7 @@ class UserAtuthorized extends Component {
                         successCb: data => {
                             const { username } = data
                             if (!!username) {
-                                Taro.switchTab({ url: '/pages/home/index' }).then()
+                                Taro.switchTab({ url: '/pages/index/index' }).then()
                             } else {
                                 this.setState({
                                     boundModuleState: true,
@@ -131,11 +131,11 @@ class UserAtuthorized extends Component {
             },
             successCb: () => {
                 showTost('绑定成功')
-                Taro.switchTab({url: '/pages/home/index'})
+                Taro.switchTab({url: '/pages/index/index'})
             },
             failCb: () => {
                 showTost('用户已经绑定')
-                Taro.switchTab({url: '/pages/home/index'})
+                Taro.switchTab({url: '/pages/index/index'})
             },
         }
         this.props.dispatchBoundUser(payload)

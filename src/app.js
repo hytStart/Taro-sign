@@ -21,10 +21,10 @@ class App extends Component {
 
     config = {
         pages: [
+            'pages/index/index',
             'pages/home/index',
             'pages/userAuthorized/index',  
             'pages/qrcode/qrcode',
-            'pages/index/index',
             'pages/information/index',
             'pages/information/informationDetail',
             'pages/myInfo/index',
@@ -48,11 +48,6 @@ class App extends Component {
             backgroundColor: "#fafafa",
             borderStyle: 'black',
             list: [{
-                pagePath: "pages/home/index",
-                iconPath: "./assets/tab-bar/home.png",
-                selectedIconPath: "./assets/tab-bar/home-active.png",
-                text: "签到"
-            }, {
                 pagePath: "pages/index/index",
                 iconPath: "./assets/tab-bar/cate.png",
                 selectedIconPath: "./assets/tab-bar/cate-active.png",
@@ -62,6 +57,11 @@ class App extends Component {
                 iconPath: "./assets/tab-bar/cart.png",
                 selectedIconPath: "./assets/tab-bar/cart-active.png",
                 text: "资料"
+            }, {
+                pagePath: "pages/home/index",
+                iconPath: "./assets/tab-bar/home.png",
+                selectedIconPath: "./assets/tab-bar/home-active.png",
+                text: "签到"
             }, {
                 pagePath: "pages/myInfo/index",
                 iconPath: "./assets/tab-bar/user.png",
