@@ -74,7 +74,7 @@ export default class NewsDetail extends Component {
             params: {
                 nid,
                 username,
-                comments,
+                content: comments,
             },
             successCb: () => {
                 util.showToast('评论成功', 'success', 2000)
