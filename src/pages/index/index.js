@@ -140,7 +140,7 @@ class Index extends Component {
                 newsValue: nid,
             },
             successCb: () => {
-                Taro.navigateTo({url: '/pages/index/newsDetail'})
+                Taro.navigateTo({url: `/pages/index/newsDetail?nid=${nid}`})
             }
         }
         this.props.dispatchGetNewsDetail(payload)

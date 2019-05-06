@@ -27,3 +27,7 @@ export const GET_SIGN_DETAIL_URL = `${url}/searchSign`
 export const GET_NEWS_LIST_URL = `${url}/searchNews`
 // 搜索资料
 export const GET_INFORMATION_LIST_URL = `${url}/searchResource`
+// 搜索评论
+export const GET_NEWS_COMMENTS_URL = `${url}/searchComments`
+// 添加评论
+export const ADD_NEWS_COMMENTS_URL = `${url}/insertComments`
