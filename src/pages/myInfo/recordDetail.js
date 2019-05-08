@@ -51,8 +51,8 @@ export default class recordDetail extends Component {
             <View className='teacher_container'>
                 <AtCard
                     title={!!title ? title.toString() : ''}
-                    note={!!name ? name.toString() : ''}
-                    extra={!!location ? location : ''}
+                    note={!!location ? location : ''}
+                    extra={!!name ? name.toString() : ''}
                 >
                     <View>开始时间：{starttime}</View>
                     <View>截止时间：{endtime}</View>

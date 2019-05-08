@@ -5,7 +5,7 @@ import {
 } from '@constants/userAuthorized.js'
 
 const INITIAL_STATE = {
-    username: 2018140442,
+    username: '',
     isteacher: 1,
     name: "",
     openid: "",

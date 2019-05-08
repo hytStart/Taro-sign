@@ -155,7 +155,7 @@ export default class NewsDetail extends Component {
                         placeholder='请输入评论'
                         height={300}
                     />
-                    <View style={{ marginTop: '10rpx' }} onClick={this.addComments}>
+                    <View style={{ marginTop: '10rpx', paddingBottom: '10rpx' }} onClick={this.addComments}>
                         <AtButton type='primary'>添加评论</AtButton>
                     </View>
                 </View>
