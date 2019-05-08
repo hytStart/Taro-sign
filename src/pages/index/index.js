@@ -4,9 +4,6 @@ import { AtSearchBar, AtCard  } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 
 import util from '@util/util'
-import SwiperImg1 from '@assets/swiper1.jpg'
-import SwiperImg2 from '@assets/swiper2.jpg'
-import SwiperImg3 from '@assets/swiper3.jpg'
 
 import {
     dispatchGetNewsList,
@@ -17,15 +14,15 @@ import './index.sass'
 
 const swiperData = [
     {
-        url: SwiperImg1,
+        url: 'https://www.niushaoda.club/img/1.jpg',
         name: '1',
     },
     {
-        url: SwiperImg2,
+        url: 'https://www.niushaoda.club/img/2.jpg',
         name: '2',
     },
     {
-        url: SwiperImg3,
+        url: 'https://www.niushaoda.club/img/3.jpg',
         name: '3',
     },
 ]
